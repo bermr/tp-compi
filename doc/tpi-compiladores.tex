@@ -1,0 +1,200 @@
+%++++++++++++++++++++++++++++++++++++++++
+% Don't modify this section unless you know what you're doing!
+\documentclass[letterpaper,12pt]{article}
+\usepackage{tabularx} % extra features for tabular environment
+\usepackage{amsmath}  % improve math presentation
+\usepackage{graphicx} % takes care of graphic including machinery
+\usepackage[margin=1in,letterpaper]{geometry} % decreases margins
+\usepackage{cite} % takes care of citations
+\usepackage[portuguese]{babel}
+\usepackage[final]{hyperref} % adds hyper links inside the generated pdf file
+\hypersetup{
+	colorlinks=true,       % false: boxed links; true: colored links
+	linkcolor=blue,        % color of internal links
+	citecolor=blue,        % color of links to bibliography
+	filecolor=magenta,     % color of file links
+	urlcolor=blue         
+}
+%++++++++++++++++++++++++++++++++++++++++
+
+
+\begin{document}
+
+\title{%
+  Constru\c{c}\~ao de Compiladores I\\
+  \large Atividade: Mini-Linguagem}
+\author{Bernardo Marotta e Melina Lopes}
+\date{\today}
+\maketitle
+
+\begin{abstract}
+A proposta dessa atividade \'e especificar uma mini linguagem de programa\c{c}\~ao simples que aborde alguns dos conceitos apresentados em sala de aula. 
+\end{abstract}
+
+
+\section{Sum\'ario}
+\textbf{A linguagem}\\
+\textbf{Aspectos l\'exicos}\\
+\textbf{Aspectos sint\'aticos}\\
+\textbf{Aspectos sem\^anticos}\\
+\textbf{Biblioteca padr\~ao}\\
+\textbf{Exemplos}\\
+
+
+\section{A linguagem}
+A linguagem \textbf{PANDA} (Precise Algorithm and Data Architecture) \'e uma mini-linguagem constru\'ida na disciplina de Constru\c{c}\~ao de Compiladores I. \'E uma linguagem imperativa simples e de tipagem est\'atica. Na linguagem, existem tipos primitivos com inteiro e ponto flutuante e tipos compostos, como arrays e estruturas. Existem tamb\'em operadores aritm\'eticos, relacionais, l\'ogicos, espressões etc.
+
+\section{Aspectos l\'exicos}
+Coment\'arios de linha: Come\c{c}am com o caracter \# e comentam a linha inteira\\
+Coment\'arios de bloco: Abre com ++[ e fecha com ]++\\
+Caracteres brancos: N\~ao interferem no interpretador l\'exico (servem de separador)\\
+Literais inteiros: Sequ\^encia de d\'igitos decimais\\
+Literais booleanos: true e false\\	
+Literais string: Delimitado por aspas duplas "", dentro da string, pode ser usado qualquer caracter especial, usando \$ para come\c{c}ar e terminar a sequ\^encia a ser escapada.\\
+Identificadores: Sequ\^encia de letras e/ou d\'igitos. Pode conter alguns caracteres especiais como \_, -, \&, etc. 
+
+\section{Aspectos sint\'aticos}
+A fim de mostrar os aspectos sint\'aticos, ser\'a apresentada uma GLC que define a sintaxe das constru\c{c}\~oes da linguagem.\\ 
+\\
+\textbf{Declara\c{c}\~ao de fun\c{c}\~oes:}\\            
+Program$\,\to\,$Functions\\
+Functions$\,\to\,$Function\\
+Functions$\,\to\,$Function Functions\\
+Function$\,\to\,$Type (Types): Exp end\\
+Type$\,\to\,$bool id\\
+Type$\,\to\,$int id\\
+Type$\,\to\,$string id\\
+Type$\,\to\,$float id\\
+Types$\,\to\,$Type TypeRest\\
+TypeRest$\,\to\,$ , Type TypeRest\\
+TypeRest$\,\to\,$$\lambda$\\
+\\
+\textbf{Tipos literais:}\\
+Exp$\,\to\,$id\\
+Exp$\,\to\,$id = Exp\\
+Exp$\,\to\,$Lit\\
+Exp$\,\to\,$Type[Lit]\\
+Lit$\,\to\,$lint\\
+Lit$\,\to\,$lstring\\
+Lit$\,\to\,$lbool\\
+Lit$\,\to\,$lfloat\\
+Lit$\,\to\,$$\lambda$\\
+Lits$\,\to\,$Lit LitRest\\
+LitRest$\,\to\,$ , Lit LitRest\\
+LitRest$\,\to\,$$\lambda$\\
+\\
+\textbf{Opera\c{c}\~oes aritm\'eticas:}\\
+Exp$\,\to\,$Exp + Exp\\
+Exp$\,\to\,$Exp - Exp\\
+Exp$\,\to\,$Exp * Exp\\
+Exp$\,\to\,$Exp \% Exp\\
+Exp$\,\to\,$Exp / Exp\\
+\\
+\textbf{Opera\c{c}\~oes relacionais:}\\
+Exp$\,\to\,$Exp = Exp\\
+Exp$\,\to\,$Exp $>$ Exp\\
+Exp$\,\to\,$Exp $<$ Exp\\
+Exp$\,\to\,$Exp $<=$ Exp\\
+Exp$\,\to\,$Exp $>=$ Exp\\
+\\
+\textbf{Opera\c{c}\~oes l\'ogicas:}\\
+Exp$\,\to\,$Exp and Exp\\
+Exp$\,\to\,$Exp or Exp\\
+\\
+\textbf{Chamada:}\\
+Exp$\,\to\,$id (Exp)\\
+\\
+\textbf{Express\~oes:}\\
+Exp$\,\to\,$if Exp : Exp else Exp end\\
+Exp$\,\to\,$while Exp : end\\
+Exp$\,\to\,$for Exp in Exp : end\\
+Exp$\,\to\,$for Exp , Exp : end\\
+Exp$\,\to\,$Exps \\
+Exps$\,\to\,$Exp ExpRest\\
+Exps$\,\to\,$ , Exp ExpRest\\
+Exps$\,\to\,$ + Exp ExpRest\\ 
+Exps$\,\to\,$$\lambda$\\
+\\
+\textbf{Preced\^encia:}\\
+*,/,\% \\
++, -\\
+=, $>$, $<$, $>=$, $<=$ \\
+and\\
+or\\
+else, then, :\\
+\section{Aspectos sem\^anticos}
+\textbf{Atribui\c{c}\~ao:}\\
+A atribui\c{c}\~ao \'e feita atrav\'es do operador =.\\
+Ex: a = 5\\
+\\
+\textbf{Operadores:}\\
+O uso de operadores \'e feito de forma simples, com as express\~oes dos dois lados do operador.\\
+Ex: a $<$ 5, a $>$ 5, a $>$ 5 and b $<$ 10\\
+\\
+\textbf{Declara\c{c}\~ao:}\\
+A declara\c{c}~ao de vari\'aveis ou fun\c{c}\~oes segue o padr\~ao:\\
+Ex: a = 5,\\
+a[] = [1,2,3]\\
+a[1] = [0]\\
+bool function(int)\\
+\\
+\textbf{Condicionais:}\\
+Sendo c1 uma sequ\^encia de comandos e c2 outra:\\
+if (BOOL) : c1 end\\
+else c2 end\\
+\\
+\textbf{Repeti\c{c}\~ao:}\\
+while (BOOL):\\
+    c1\\
+end\\
+\\
+for (ITEM) in (LISTA):\\
+    c2\\
+end\\
+\\
+for (i) , (i2):\\
+    c3\\
+end\\
+\\
+\section{Biblioteca padr\~ao}
+A id das fun\c{c}\~oes da biblioteca padr\~ao come\c{c}am com pnd.\\
+Exemplo: pnd.getLine(Exp)\hspace*{8mm}Guarda a entrada do teclado na vari\'avel id (entre par\^enteses).\\
+Outros exemplos:\\
+pnd.print(Exp)\hspace*{24mm}Imprime na tela o conte\'udo\\
+pnd.pow(Exp, Exp)\hspace*{24mm}Calcula pot\^encia\\
+pnd.fibonacci(Exp)\hspace*{24mm}Calcula fibonacci\\
+pnd.factorial(Exp)\hspace*{24mm}Calcula fatorial\\
+\\
+\section{Exemplos}
+Fun\c{c}\~ao Fibonacci em PANDA:\\
+\\
+function fibonacci(int n):\\
+\hspace*{8mm}a = 0\\
+\hspace*{8mm}b = 1\\
+\hspace*{8mm}for i = 1, n:\\
+\hspace*{12mm}a = b\\
+\hspace*{12mm}b = a + b\\
+\hspace*{8mm}end\\
+\hspace*{8mm}return a\\
+end\\
+\\
+function insertionSort(int array[], int n):\\
+\hspace*{8mm}int i, key, j;\\
+\hspace*{8mm}for 1, n:\\
+\hspace*{12mm}key = arr[i]\\
+\hspace*{12mm}j = i-1\\
+\hspace*{12mm}while (j >= 0 and arr[j] > key)\\
+\hspace*{16mm}arr[j+1] = arr[j]\\
+\hspace*{16mm}j = j-1\\
+\hspace*{12mm}end\\
+\hspace*{12mm}arr[j+1] = key\\
+\hspace*{8mm}end\\
+end\\
+\\
+int main():\\
+\hspace*{8mm}int a\\
+\hspace*{8mm}pnd.getLine(a)\\
+\hspace*{8mm}fibonacci(a)\\
+\hspace*{8mm}pnd.print("The fibonacci of a is" , a)\\
+end\\
+\end{document}
