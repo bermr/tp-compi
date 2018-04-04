@@ -42,7 +42,7 @@ A proposta dessa atividade \'e especificar uma mini linguagem de programa\c{c}\~
 
 
 \section{A linguagem}
-A linguagem \textbf{PANDA} (Precise Algorithm and Data Architecture) \'e uma mini-linguagem constru\'ida na disciplina de Constru\c{c}\~ao de Compiladores I. \'E uma linguagem imperativa simples e de tipagem est\'atica. Na linguagem, existem tipos primitivos com inteiro e ponto flutuante e tipos compostos, como arrays e estruturas. Existem tamb\'em operadores aritm\'eticos, relacionais, l\'ogicos, espressões etc.
+A linguagem \textbf{Lhama} (Language of Heuristic Algorithms and Multithread Architecture) \'e uma mini-linguagem constru\'ida na disciplina de Constru\c{c}\~ao de Compiladores I. \'E uma linguagem imperativa simples e de tipagem est\'atica. Na linguagem, existem tipos primitivos com inteiro e ponto flutuante e tipos compostos, como arrays e estruturas. Existem tamb\'em operadores aritm\'eticos, relacionais, l\'ogicos, espressões etc.
 
 \section{Aspectos l\'exicos}
 Coment\'arios de linha: Come\c{c}am com o caracter \# e comentam a linha inteira\\
@@ -157,16 +157,16 @@ for (i) , (i2):\\
 end\\
 \\
 \section{Biblioteca padr\~ao}
-A id das fun\c{c}\~oes da biblioteca padr\~ao come\c{c}am com pnd.\\
-Exemplo: pnd.getLine(Exp)\hspace*{8mm}Guarda a entrada do teclado na vari\'avel id (entre par\^enteses).\\
+A id das fun\c{c}\~oes da biblioteca padr\~ao come\c{c}am com lh.\\
+Exemplo: lh.getLine(Exp)\hspace*{8mm}Guarda a entrada do teclado na vari\'avel id (entre par\^enteses).\\
 Outros exemplos:\\
-pnd.print(Exp)\hspace*{24mm}Imprime na tela o conte\'udo\\
-pnd.pow(Exp, Exp)\hspace*{24mm}Calcula pot\^encia\\
-pnd.fibonacci(Exp)\hspace*{24mm}Calcula fibonacci\\
-pnd.factorial(Exp)\hspace*{24mm}Calcula fatorial\\
+lh.print(Exp)\hspace*{24mm}Imprime na tela o conte\'udo\\
+lh.pow(Exp, Exp)\hspace*{24mm}Calcula pot\^encia\\
+lh.fibonacci(Exp)\hspace*{24mm}Calcula fibonacci\\
+lh.factorial(Exp)\hspace*{24mm}Calcula fatorial\\
 \\
 \section{Exemplos}
-Fun\c{c}\~ao Fibonacci em PANDA:\\
+Fun\c{c}\~ao Fibonacci em Lhama Language:\\
 \\
 function fibonacci(int n):\\
 \hspace*{8mm}a = 0\\
@@ -183,7 +183,7 @@ function insertionSort(int array[], int n):\\
 \hspace*{8mm}for 1, n:\\
 \hspace*{12mm}key = arr[i]\\
 \hspace*{12mm}j = i-1\\
-\hspace*{12mm}while (j >= 0 and arr[j] > key)\\
+\hspace*{12mm}while (j $>$= 0 and arr[j] $>$ key)\\
 \hspace*{16mm}arr[j+1] = arr[j]\\
 \hspace*{16mm}j = j-1\\
 \hspace*{12mm}end\\
@@ -193,8 +193,8 @@ end\\
 \\
 int main():\\
 \hspace*{8mm}int a\\
-\hspace*{8mm}pnd.getLine(a)\\
+\hspace*{8mm}lh.getLine(a)\\
 \hspace*{8mm}fibonacci(a)\\
-\hspace*{8mm}pnd.print("The fibonacci of a is" , a)\\
+\hspace*{8mm}lh.print("The fibonacci of a is" , a)\\
 end\\
 \end{document}
