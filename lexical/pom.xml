@@ -5,12 +5,12 @@
    <modelVersion>4.0.0</modelVersion>
 
    <groupId>br.ufop.decom.bcc328</groupId>
-   <artifactId>torben</artifactId>
+   <artifactId>lhama</artifactId>
    <version>0.1-SNAPSHOT</version>
    <packaging>jar</packaging>
 
-   <name>Torben compiler</name>
-   <url>https://github.com/romildo/torben-java</url>
+   <name>Lhama compiler</name>
+   <url>https://github.com/bermr/tp-compi</url>
 
    <properties>
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
