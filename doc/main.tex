@@ -1,13 +1,13 @@
 %++++++++++++++++++++++++++++++++++++++++
-% Don't modify this section unless you know what you're doing!
 \documentclass[letterpaper,12pt]{article}
-\usepackage{tabularx} % extra features for tabular environment
-\usepackage{amsmath}  % improve math presentation
-\usepackage{graphicx} % takes care of graphic including machinery
-\usepackage[margin=1in,letterpaper]{geometry} % decreases margins
-\usepackage{cite} % takes care of citations
 \usepackage[portuguese]{babel}
-\usepackage[final]{hyperref} % adds hyper links inside the generated pdf file
+\usepackage[utf8]{inputenc}
+\usepackage{tabularx}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[margin=1in,letterpaper]{geometry}
+\usepackage{cite}
+\usepackage[final]{hyperref}
 \hypersetup{
 	colorlinks=true,       % false: boxed links; true: colored links
 	linkcolor=blue,        % color of internal links
@@ -19,7 +19,7 @@
 
 
 \begin{document}
-
+  
 \title{%
   Constru\c{c}\~ao de Compiladores I\\
   \large Atividade: Mini-Linguagem}
@@ -32,7 +32,7 @@ A proposta dessa atividade \'e especificar uma mini linguagem de programa\c{c}\~
 \end{abstract}
 
 
-\section{Sum\'ario}
+\section{Sumário}
 \textbf{A linguagem}\\
 \textbf{Aspectos l\'exicos}\\
 \textbf{Aspectos sint\'aticos}\\
@@ -46,9 +46,12 @@ A linguagem \textbf{Lhama} (Language of Heuristic Algorithms and Multithread Arc
 
 \section{Aspectos l\'exicos}
 Coment\'arios de linha: Come\c{c}am com o caracter \# e comentam a linha inteira\\
-Coment\'arios de bloco: Abre com ++[ e fecha com ]++\\
+Coment\'arios de bloco:\\
+Abre com:  $\sim$$[$\\
+Fecha com: $]$$\sim$ \\
 Caracteres brancos: N\~ao interferem no interpretador l\'exico (servem de separador)\\
 Literais inteiros: Sequ\^encia de d\'igitos decimais\\
+Literais float: Sequência de dígitos decimais reais\\
 Literais booleanos: true e false\\	
 Literais string: Delimitado por aspas duplas "", dentro da string, pode ser usado qualquer caracter especial, usando \$ para come\c{c}ar e terminar a sequ\^encia a ser escapada.\\
 Identificadores: Sequ\^encia de letras e/ou d\'igitos. Pode conter alguns caracteres especiais como \_, -, \&, etc. 
@@ -132,7 +135,7 @@ O uso de operadores \'e feito de forma simples, com as express\~oes dos dois lad
 Ex: a $<$ 5, a $>$ 5, a $>$ 5 and b $<$ 10\\
 \\
 \textbf{Declara\c{c}\~ao:}\\
-A declara\c{c}~ao de vari\'aveis ou fun\c{c}\~oes segue o padr\~ao:\\
+A declara\c{c}\~ao de vari\'aveis ou fun\c{c}\~oes segue o padr\~ao:\\
 Ex: a = 5,\\
 a[] = [1,2,3]\\
 a[1] = [0]\\
@@ -164,6 +167,7 @@ lh.print(Exp)\hspace*{24mm}Imprime na tela o conte\'udo\\
 lh.pow(Exp, Exp)\hspace*{24mm}Calcula pot\^encia\\
 lh.fibonacci(Exp)\hspace*{24mm}Calcula fibonacci\\
 lh.factorial(Exp)\hspace*{24mm}Calcula fatorial\\
+\\
 \\
 \section{Exemplos}
 Fun\c{c}\~ao Fibonacci em Lhama Language:\\
