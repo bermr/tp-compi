@@ -16,8 +16,87 @@ terminal         LE, GE, EQ;
 terminal         NE, LT, GT;
 terminal         AND, OR;
 
-non terminal program;
+non terminal Program program;
+non terminal Exp exp;
+non terminal List<Exp> exps, expsRest;
+non terminal TypeName typename;
+non terminal Type type;
+non terminal List<Type> types, typesRest;
+non terminal Function function;
+non terminal List<Function> functions;
+
+precedence left OR;
+precedence left AND;
+precedence nonassoc EQ, NE, GT, LT, LE, GE;
+precedence left PLUS, MINUS;
+precedence left TIMES, DIV, MOD;
 
 start with program;
 
-program ::= ;
+program ::=
+  functions:f                                    {: RESULT = new Program(loc(fxleft,fxright), f); :}
+;
+
+exp ::=
+  LITBOOL:x                                 {: RESULT = new ExpBool(loc(xxleft,xxright), x); :}
+| LITINT:x                                  {: RESULT = new ExpInt(loc(xxleft,xxright), x); :}
+| LITSTRING:x                               {: RESULT = new ExpString(loc(xxleft,xxright), x); :}
+| exp:x AND exp:y                           {: RESULT = new ExpBin(loc(xxleft,yxright), ExpBin.Operator.AND, x, y); :}
+| exp:x OR exp:y                            {: RESULT = new ExpBin(loc(xxleft,yxright), ExpBin.Operator.OR, x, y); :}
+| exp:x EQ exp:y                            {: RESULT = new ExpBin(loc(xxleft,yxright), ExpBin.Operator.EQ, x, y); :}
+| exp:x NE exp:y                            {: RESULT = new ExpBin(loc(xxleft,yxright), ExpBin.Operator.NE, x, y); :}
+| exp:x GT exp:y                            {: RESULT = new ExpBin(loc(xxleft,yxright), ExpBin.Operator.GT, x, y); :}
+| exp:x GE exp:y                            {: RESULT = new ExpBin(loc(xxleft,yxright), ExpBin.Operator.GE, x, y); :}
+| exp:x LT exp:y                            {: RESULT = new ExpBin(loc(xxleft,yxright), ExpBin.Operator.LT, x, y); :}
+| exp:x LE exp:y                            {: RESULT = new ExpBin(loc(xxleft,yxright), ExpBin.Operator.LE, x, y); :}
+| exp:x PLUS exp:y                          {: RESULT = new ExpBin(loc(xxleft,yxright), ExpBin.Operator.PLUS, x, y); :}
+| exp:x MINUS exp:y                         {: RESULT = new ExpBin(loc(xxleft,yxright), ExpBin.Operator.MINUS, x, y); :}
+| exp:x TIMES exp:y                         {: RESULT = new ExpBin(loc(xxleft,yxright), ExpBin.Operator.TIMES, x, y); :}
+| exp:x DIV exp:y                           {: RESULT = new ExpBin(loc(xxleft,yxright), ExpBin.Operator.DIV, x, y); :}
+| exp:x MOD exp:y                           {: RESULT = new ExpBin(loc(xxleft,yxright), ExpBin.Operator.MOD, x, y); :}
+| LPAREN:l exps:s RPAREN:r                  {: RESULT = new ExpSeq(loc(lxleft,rxright), s); :}
+| ID:v                                      {: RESULT = new ExpVar(loc(vxleft,vxright), v); :}
+| ID:v ASSIGN exp:e                         {: RESULT = new ExpAssign(loc(vxleft,exright), v, e); :}
+| ID:f LPAREN exps:a RPAREN:r               {: RESULT = new ExpCall(loc(fxleft,rxright), f, a); :}
+| IF:i exp:t THEN exp:x ELSE exp:y          {: RESULT = new ExpCond(loc(ixleft,yxright), t, x, y); :}
+| WHILE:w exp:t DO exp:b                    {: RESULT = new ExpWhile(loc(wxleft,bxright), t, b); :}
+;
+
+exps ::=
+  /* empty */                               {: RESULT = List.empty(); :}
+| exp:x expsRest:xs                         {: RESULT = xs.prepend(x); :}
+;
+
+expsRest ::=
+  /* empty */                               {: RESULT = List.empty(); :}
+| COMMA exp:x expsRest:xs                   {: RESULT = xs.prepend(x); :}
+;
+
+functions ::=
+  /* empty */                               {: RESULT = List.empty(); :}
+| function:x functions:xs                   {: RESULT = xs.prepend(x); :}
+;
+
+function ::=
+  type:f LPAREN types:p RPAREN EQ exp:b     {: RESULT = new Function(loc(fxleft,bxright), f, p, b); :}
+;
+
+type ::=
+  typename:t ID:x                           {: RESULT = new Type(loc(txleft,xxright), t, x); :}
+;
+
+types ::=
+  /* empty */                               {: RESULT = List.empty(); :}
+| type:x typesRest:xs                       {: RESULT = xs.prepend(x); :}
+;
+
+typesRest ::=
+  /* empty */                               {: RESULT = List.empty(); :}
+| COMMA type:x typesRest:xs                 {: RESULT = xs.prepend(x); :}
+;
+
+typename ::=
+| BOOL                                      {: RESULT = TypeName.BOOL; :}
+| INT                                       {: RESULT = TypeName.INT; :}
+| STRING                                    {: RESULT = TypeName.STRING; :}
+;
